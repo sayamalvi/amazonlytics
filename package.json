@@ -9,17 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "axios": "^1.6.2",
+    "bcryptjs": "^2.4.3",
+    "cheerio": "^1.0.0-rc.12",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.1",
+    "next": "latest",
+    "puppeteer": "^21.3.6",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "react-hot-toast": "^2.4.1",
+    "react-responsive-carousel": "^3.2.23"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/react": "latest",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "latest",
+    "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
     "postcss": "latest",
-    "tailwindcss": "latest"
+    "tailwindcss": "latest",
+    "typescript": "latest"
   }
 }

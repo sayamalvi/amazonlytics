@@ -1,0 +1,30 @@
+'use client'
+import Link from 'next/link'
+import Image from 'next/image'
+import axios from 'axios'
+import { useRouter, usePathname } from 'next/navigation'
+const Navbar = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const handleLogout = async () => {
+    await axios.get('/api/users/logout')
+    router.push('/login')
+  }
+
+  return (
+    <header className='w-full'>
+      <nav className='nav'>
+        <Link href='/' className='flex items-center gap-1 w-full justify-center'>
+          <Image src='/assets/icons/logo.svg' width={40} height={40} alt='logo' />
+          <p className='nav-logo'>Amazon<span className='text-primary'>lytics</span></p>
+        </Link>
+
+        {pathname === '/login' || pathname === '/signup' ? '' : (
+          <button onClick={handleLogout}>Logout</button>
+        )}
+      </nav>
+    </header>
+  )
+}
+
+export default Navbar
