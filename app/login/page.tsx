@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -10,6 +10,7 @@ const Login = () => {
     email: "",
     password: "",
   })
+  const [userDetails, setUserDetails] = React.useState({})
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -17,9 +18,14 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      console.log("Login success", response.data);
+      console.log("Login success", response);
       router.push("/");
-
+      try {
+        const fetchUserDetails = await axios.post("/api/users/fetchUser", user);
+        setUserDetails({ ...fetchUserDetails.data })
+      } catch (error) {
+        console.log(error)
+      }
     } catch (error: any) {
       console.log("Login failed", error.message);
       toast.error(error.message);
@@ -35,7 +41,7 @@ const Login = () => {
       setButtonDisabled(true);
     }
   }, [user]);
-
+  useEffect(() => { localStorage.setItem('userDetails', JSON.stringify(userDetails)) }, [userDetails])
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">

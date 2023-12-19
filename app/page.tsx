@@ -6,6 +6,7 @@ import { getAllProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
 const Home = async () => {
   const allProducts = await getAllProducts()
+  
   return (
     <>
       <section className='px-6 mx:px-20 py-24'>
@@ -19,7 +20,7 @@ const Home = async () => {
             <p className='mt-6'>Powerful, self-serve product and growth to help you convert, engage and retain more.</p>
             <SearchBar />
           </div>
-          <HeroCarousel />
+          {/* <HeroCarousel /> */}
         </div>
       </section>
       <section className='trending-section'>
