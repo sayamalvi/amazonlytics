@@ -90,7 +90,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                     <h3 className='text-2xl text-secondary font-semibold'>Product Description</h3>
 
                     <div className='flex flex-col gap-4'>
-                        {product?.description}
+                        {product?.description || 'No description found'}
                     </div>
                 </div>
                 <button className='btn w-fit mx-auto flex items-center justify-center gap-2 min-w-[200px]'>

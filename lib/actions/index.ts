@@ -5,12 +5,13 @@ import { connectToDB } from "../mongoose";
 import Product from "../models/product.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
 
+connectToDB();
+
 export async function scrapeAndStore(productURL: string) {
   if (!productURL) {
     return;
   }
   try {
-    connectToDB();
     const scrapedProduct = await scrapeAmazonProduct(productURL);
     if (!scrapedProduct) return;
     let product = scrapedProduct;
@@ -77,11 +78,22 @@ export async function getSimilarProducts(productId: string) {
     console.log(error);
   }
 }
-export async function addUserEmail(productId: string, email: string) {
+export async function cronJob() {
   try {
-    const product = await Product.findById(productId);
-    if (!product) return;
+    const allProducts = await Product.find();
+    if (!allProducts) return;
+    for (const product of allProducts) {
+      await scrapeAndStore(product.url);
+      if (product.priceHistory.length === 20) {
+        product.priceHistory.splice(0, 10);
+        console.log("Deleted first 5 prices");
+        await product.save();
+      }
+    }
+    console.log("Tracking..");
   } catch (error) {
     console.log(error);
   }
 }
+
+// setInterval(cronJob, 1000 * 60 * 60 * 24);
