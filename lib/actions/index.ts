@@ -3,7 +3,6 @@ import { revalidatePath } from "next/cache";
 import { scrapeAmazonProduct } from "../scraper";
 import { connectToDB } from "../mongoose";
 import Product from "../models/product.model";
-import User from "../models/user.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
 
 export async function scrapeAndStore(productURL: string) {
@@ -13,7 +12,6 @@ export async function scrapeAndStore(productURL: string) {
   try {
     connectToDB();
     const scrapedProduct = await scrapeAmazonProduct(productURL);
-
     if (!scrapedProduct) return;
     let product = scrapedProduct;
     const existingProduct = await Product.findOne({
@@ -22,8 +20,11 @@ export async function scrapeAndStore(productURL: string) {
     if (existingProduct) {
       const updatedPriceHistory: any = [
         ...existingProduct.priceHistory,
+        // we will push original and current price to the price history because if the original price is greater than current price it won't show on the highest price
         { price: scrapedProduct.currentPrice },
+        { price: scrapedProduct.originalPrice },
       ];
+
       product = {
         ...scrapedProduct,
         priceHistory: updatedPriceHistory,

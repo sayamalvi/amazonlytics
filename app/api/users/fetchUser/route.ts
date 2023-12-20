@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
     const { email } = reqBody;
     const user = await User.findOne({ email });
     const sentUser = {
+      id: user._id,
       username: user.username,
       email: user.email,
       searchedProducts: user.searchedProducts,

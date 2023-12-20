@@ -32,12 +32,9 @@ export async function POST(request: NextRequest) {
       message: "Login Successfull",
       success: true,
     });
-    const sentUserDetails = {
-      username: user.username,
-      email: user.email,
-    };
 
     response.cookies.set("token", token, { httpOnly: true });
+    response.cookies.set("email", email, { httpOnly: true });
     return response;
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 404 });

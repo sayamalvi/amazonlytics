@@ -39,10 +39,12 @@ export async function scrapeAmazonProduct(url: string) {
       .pop();
     const reviewCount = $("#averageCustomerReviews #acrCustomerReviewText")
       .text()
-      .trim();
+      .trim()
+      .split(" ")[0];
     const reviewRating = $("#averageCustomerReviews .a-size-base.a-color-base")
       .text()
-      .trim();
+      .trim()
+      .split(" ")[0];
     const description = $("#productDescription span").text().trim();
     const detail = $("#detailBullets_feature_div").text().trim();
     const data = {
@@ -63,6 +65,7 @@ export async function scrapeAmazonProduct(url: string) {
       reviewCount,
       discount,
     };
+    console.log(data);
     return data;
   } catch (error: any) {
     throw new Error("Failed to scrape");
