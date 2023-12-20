@@ -19,13 +19,18 @@ export async function scrapeAndStore(productURL: string) {
       title: scrapedProduct.title,
     });
     if (existingProduct) {
-      const updatedPriceHistory: any = [
+      let updatedPriceHistory: any = [
         ...existingProduct.priceHistory,
-        // we will push original and current price to the price history because if the original price is greater than current price it won't show on the highest price
         { price: scrapedProduct.currentPrice },
-        { price: scrapedProduct.originalPrice },
       ];
-
+      if (
+        !existingProduct.priceHistory.includes(scrapedProduct.originalPrice)
+      ) {
+        updatedPriceHistory = [
+          ...existingProduct.priceHistory,
+          { price: scrapedProduct.originalPrice },
+        ];
+      }
       product = {
         ...scrapedProduct,
         priceHistory: updatedPriceHistory,
@@ -78,7 +83,7 @@ export async function getSimilarProducts(productId: string) {
     console.log(error);
   }
 }
-export async function cronJob() {
+async function cronJob() {
   try {
     const allProducts = await Product.find();
     if (!allProducts) return;
