@@ -25,7 +25,7 @@ const SearchBar = () => {
             setLoading(true)
             const productID = await scrapeAndStore(searchPrompt)
             console.log(productID)
-            // const resp = axios.post('/api/users/addProductToUser', { productID }).then((res) => console.log(res)).catch((err) => console.log(err))
+            const resp = axios.post('/api/users/addProductToUser', { productID }).then((res) => console.log(res)).catch((err) => console.log(err))
         } catch (error) {
             console.log(error)
         }
