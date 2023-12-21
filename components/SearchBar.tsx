@@ -1,5 +1,6 @@
 'use client'
 import { scrapeAndStore } from '@/lib/actions/index'
+import axios from 'axios'
 import React from 'react'
 const SearchBar = () => {
     const [searchPrompt, setSearchPrompt] = React.useState('')
@@ -22,7 +23,9 @@ const SearchBar = () => {
         if (!isValid) return alert('Please enter a valid Amazon product link')
         try {
             setLoading(true)
-            const product = await scrapeAndStore(searchPrompt)
+            const productID = await scrapeAndStore(searchPrompt)
+            console.log(productID)
+            // const resp = axios.post('/api/users/addProductToUser', { productID }).then((res) => console.log(res)).catch((err) => console.log(err))
         } catch (error) {
             console.log(error)
         }

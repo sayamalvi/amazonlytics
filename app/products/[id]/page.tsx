@@ -7,7 +7,7 @@ import PriceInfoCard from '@/components/PriceInfoCard'
 import { getSimilarProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
 import { Product } from '@/app/types'
-import Modal from '@/components/Modal'
+
 type Props = {
     params: { id: string }
 }
@@ -82,7 +82,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                             </div>
                         </div>
                     </div>
-                    <Modal />
+                    {/* <Modal /> */}
                 </div>
             </div>
             <div className='flex flex-col gap-10 '>
@@ -93,9 +93,12 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                         {product?.description || 'No description found'}
                     </div>
                 </div>
-                <button className='btn w-fit mx-auto flex items-center justify-center gap-2 min-w-[200px]'>
+                <button className='btn w-fit mx-auto flex items-center justify-center min-w-[200px]'>
                     <Image src='/assets/icons/bag.svg' alt='check' height={22} width={22} />
-                    <Link href='/' className='text-base text-white'>Buy Now</Link>
+                    <Link href={product.url} target='_blank' className='text-base text-white'>Buy Now</Link>
+                </button>
+                <button className='btn w-fit mx-auto flex items-center justify-center min-w-[200px]'>
+                    Track
                 </button>
             </div>
             {similarProducts && similarProducts?.length > 0 && (

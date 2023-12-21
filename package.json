@@ -13,6 +13,7 @@
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.12",
+    "cookie": "^0.6.0",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.1",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cookie": "^0.6.0",
     "@types/js-cookie": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "latest",
