@@ -6,7 +6,8 @@ import Product from "../models/product.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
 import User from "../models/user.model";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { cookies } from "next/headers";
+
 connectToDB();
 
 export async function scrapeAndStore(productURL: string) {
@@ -76,9 +77,11 @@ export async function getAllProducts() {
 export async function getSearchedProducts() {
   try {
     connectToDB();
-    const email = await axios.get("http://localhost:3000/api/users/fetchUser");
-    return email;
-    // const user = await User.find();
+    const email = cookies().get("email")?.value;
+    const user = await User.findOne({ email });
+    if (!user) return null;
+    const searchedProducts = user.searchedProducts;
+    return searchedProducts;
   } catch (error) {
     console.log(error);
   }

@@ -8,8 +8,8 @@ import axios from 'axios'
 
 const Home = async () => {
   const allProducts = await getAllProducts()
-  const email = await getSearchedProducts()
-  // console.log(email)
+  const searchedProducts = await getSearchedProducts()
+  console.log(searchedProducts)
   return (
     <>
       <section className='px-6 mx:px-20 py-4'>
@@ -30,7 +30,7 @@ const Home = async () => {
       <section className='trending-section'>
         <h2 className='section-text'>Your recent searches</h2>
         <div className='flex flex-wrap gap-x-8 gap-y-16'>
-          {allProducts?.map((product) => (
+          {searchedProducts?.map((product: any) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
