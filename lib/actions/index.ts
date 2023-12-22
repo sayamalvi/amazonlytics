@@ -4,7 +4,9 @@ import { scrapeAmazonProduct } from "../scraper";
 import { connectToDB } from "../mongoose";
 import Product from "../models/product.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
-
+import User from "../models/user.model";
+import axios from "axios";
+import Cookies from "js-cookie";
 connectToDB();
 
 export async function scrapeAndStore(productURL: string) {
@@ -71,6 +73,16 @@ export async function getAllProducts() {
     console.log(error);
   }
 }
+export async function getSearchedProducts() {
+  try {
+    connectToDB();
+    const email = await axios.get("http://localhost:3000/api/users/fetchUser");
+    return email;
+    // const user = await User.find();
+  } catch (error) {
+    console.log(error);
+  }
+}
 export async function getSimilarProducts(productId: string) {
   try {
     connectToDB();
@@ -84,6 +96,7 @@ export async function getSimilarProducts(productId: string) {
     console.log(error);
   }
 }
+
 async function cronJob() {
   try {
     const allProducts = await Product.find();

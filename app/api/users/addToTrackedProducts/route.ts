@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     //Push the product into user's searchedProducts array and save it
-    user.searchedProducts.push(product);
+    user.trackedProducts.push(product);
     await user.save();
 
     return NextResponse.json({ email }, { status: 200 });

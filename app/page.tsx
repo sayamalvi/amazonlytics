@@ -2,11 +2,14 @@ import React from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/SearchBar'
 import HeroCarousel from '@/components/HeroCarousel'
-import { getAllProducts } from '@/lib/actions'
+import { getAllProducts, getSearchedProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
+import axios from 'axios'
+
 const Home = async () => {
   const allProducts = await getAllProducts()
-
+  const email = await getSearchedProducts()
+  // console.log(email)
   return (
     <>
       <section className='px-6 mx:px-20 py-4'>

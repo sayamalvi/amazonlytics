@@ -7,14 +7,16 @@ import PriceInfoCard from '@/components/PriceInfoCard'
 import { getSimilarProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
 import { Product } from '@/app/types'
-
+import TrackButton from '@/components/TrackButton'
 type Props = {
     params: { id: string }
 }
+
 const ProductDetails = async ({ params: { id } }: Props) => {
     const product = await getProductById(id)
     if (!product) redirect('/')
     const similarProducts = await getSimilarProducts(id)
+    
     return (
         <div className='product-container'>
             <div className='flex gap-28 xl:flex-row flex-col'>
@@ -97,9 +99,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                     <Image src='/assets/icons/bag.svg' alt='check' height={22} width={22} />
                     <Link href={product.url} target='_blank' className='text-base text-white'>Buy Now</Link>
                 </button>
-                <button className='btn w-fit mx-auto flex items-center justify-center min-w-[200px]'>
-                    Track
-                </button>
+                <TrackButton />
             </div>
             {similarProducts && similarProducts?.length > 0 && (
                 <div className='py-14 flex flex-col gap-2 w-full'>
