@@ -25,11 +25,24 @@ export async function POST(request: NextRequest) {
         { message: "Product not found" },
         { status: 404 }
       );
-    //Push the product into user's searchedProducts array and save it
-    user.trackedProducts.push(product);
-    await user.save();
-
-    return NextResponse.json({ email }, { status: 200 });
+    //Push the product into user's trackedProducts array and save it
+    if (
+      user.trackedProducts.some(
+        (product: any) => product._id.toString() === productID
+      )
+    ) {
+      return NextResponse.json(
+        { message: "Product already exists" },
+        { status: 403 }
+      );
+    } else {
+      user.trackedProducts.push(product);
+      await user.save();
+      return NextResponse.json(
+        { message: "Saved to tracked products" },
+        { status: 200 }
+      );
+    }
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 404 });
   }

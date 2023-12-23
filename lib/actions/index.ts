@@ -5,7 +5,6 @@ import { connectToDB } from "../mongoose";
 import Product from "../models/product.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
 import User from "../models/user.model";
-import axios from "axios";
 import { cookies } from "next/headers";
 
 connectToDB();
@@ -55,6 +54,26 @@ export async function scrapeAndStore(productURL: string) {
     throw new Error(`Failed to create/update product: :${error.message}`);
   }
 }
+export async function saveToSearchedProducts(productId: string) {
+  try {
+    const email = cookies().get("email")?.value;
+
+    const user = await User.findOne({ email });
+    if (!user) return;
+
+    const product = await Product.findById(productId);
+    if (!product) return;
+
+    if (user.searchedProducts.includes(product)) return;
+
+    user.searchedProducts.push(product);
+    await user.save();
+    
+  } catch (error: any) {
+    console.log(error);
+  }
+}
+
 export async function getProductById(productId: string) {
   try {
     connectToDB();
@@ -102,10 +121,20 @@ export async function getSimilarProducts(productId: string) {
 
 async function cronJob() {
   try {
-    const allProducts = await Product.find();
-    if (!allProducts) return;
-    for (const product of allProducts) {
+    connectToDB();
+    const email = cookies().get("email")?.value;
+    const user = await User.findOne({ email });
+    if (!user) return null;
+    const trackedProducts = user.trackedProducts;
+    for (const product of trackedProducts) {
       await scrapeAndStore(product.url);
+      if (
+        product.priceHistory[product.priceHistory.length - 1].price <
+        product.priceHistory[product.priceHistory.length - 2].price
+      ) {
+        console.log(`Price dropped for ${product.title}`);
+        return;
+      }
       if (product.priceHistory.length === 20) {
         product.priceHistory.splice(0, 10);
         console.log("Deleted first 5 prices");
@@ -118,4 +147,4 @@ async function cronJob() {
   }
 }
 
-// setInterval(cronJob, 1000 * 60 * 60 * 24);
+// setInterval(cronJob, 1000 * 20);

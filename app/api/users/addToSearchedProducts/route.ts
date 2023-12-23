@@ -26,10 +26,20 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     //Push the product into user's searchedProducts array and save it
-    user.searchedProducts.push(product);
-    await user.save();
+    if (
+      user.searchedProducts.some((product: any) => product._id.toString()) ===
+      productID
+    ) {
+      return NextResponse.json(
+        { message: "Product already exists" },
+        { status: 200 }
+      );
+    } else {
+      user.searchedProducts.push(product);
+      await user.save();
 
-    return NextResponse.json({ email }, { status: 200 });
+      return NextResponse.json({ email }, { status: 200 });
+    }
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 404 });
   }

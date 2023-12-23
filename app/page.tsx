@@ -2,14 +2,11 @@ import React from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/SearchBar'
 import HeroCarousel from '@/components/HeroCarousel'
-import { getAllProducts, getSearchedProducts } from '@/lib/actions'
+import { getSearchedProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
-import axios from 'axios'
 
 const Home = async () => {
-  const allProducts = await getAllProducts()
   const searchedProducts = await getSearchedProducts()
-  console.log(searchedProducts)
   return (
     <>
       <section className='px-6 mx:px-20 py-4'>
@@ -30,9 +27,12 @@ const Home = async () => {
       <section className='trending-section'>
         <h2 className='section-text'>Your recent searches</h2>
         <div className='flex flex-wrap gap-x-8 gap-y-16'>
-          {searchedProducts?.map((product: any) => (
+          {searchedProducts.length === 0 ? <div>
+            <h1 className='text-gray-500 px-2'>You have not searched anything yet</h1>
+          </div> : searchedProducts?.map((product: any) => (
             <ProductCard key={product._id} product={product} />
           ))}
+
         </div>
       </section>
     </>
