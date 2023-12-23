@@ -8,7 +8,7 @@ const TrackButton = () => {
   const [buttonText, setButtonText] = useState('Track')
   const [errCode, setErrCode] = useState(0)
   const trackProduct = async () => {
-    setButtonText("Adding to tracked products...")
+    setButtonText("Adding to tracked products ...")
     try {
       const res = await axios.post('/api/users/addToTrackedProducts', { productID: id })
       toast('Product added to tracked products !', {
