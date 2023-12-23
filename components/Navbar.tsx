@@ -9,7 +9,7 @@ const Navbar = () => {
   const pathname = usePathname()
   const handleLogout = async () => {
     try {
-      await axios.get('/api/users/logout')
+      await axios.post('/api/users/logout')
       router.replace("/login")
       router.refresh()
     } catch (error) {
