@@ -10,7 +10,7 @@ const Login = () => {
     email: "",
     password: "",
   })
-  const [userDetails, setUserDetails] = React.useState({})
+  // const [userDetails, setUserDetails] = React.useState({})
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -27,13 +27,7 @@ const Login = () => {
         },
         icon: '✅'
       });
-      try {
-        const fetchUserDetails = await axios.post("/api/users/fetchUser", user);
-        setUserDetails({ ...fetchUserDetails.data })
-
-      } catch (error) {
-        console.log(error)
-      }
+     
     } catch (error: any) {
       console.log("Login failed", error);
       toast(error.response.data.message, {
@@ -57,7 +51,7 @@ const Login = () => {
       setButtonDisabled(true);
     }
   }, [user]);
-  useEffect(() => { localStorage.setItem('userDetails', JSON.stringify(userDetails)) }, [userDetails])
+  // useEffect(() => { localStorage.setItem('userDetails', JSON.stringify(userDetails)) }, [userDetails])
 
   return (
     <>
