@@ -4,9 +4,12 @@ import SearchBar from '@/components/SearchBar'
 import HeroCarousel from '@/components/HeroCarousel'
 import { getSearchedProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
-
+import toast, { Toaster } from 'react-hot-toast'
+import { getUser } from '@/lib/actions'
 const Home = async () => {
   const searchedProducts = await getSearchedProducts()
+  const userDetails = await getUser()
+  const user = JSON.parse(userDetails!)
   return (
     <>
       <section className='px-6 mx:px-20 py-4'>
@@ -32,11 +35,9 @@ const Home = async () => {
           </div> : searchedProducts?.map((product: any) => (
             <ProductCard key={product._id} product={product} />
           ))}
-
         </div>
       </section>
     </>
   )
 }
-
 export default Home

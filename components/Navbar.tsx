@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
 import { useRouter, usePathname } from 'next/navigation'
-
+import { getUser } from '@/lib/actions'
 const Navbar = () => {
   const router = useRouter()
   const pathname = usePathname()
@@ -19,6 +19,7 @@ const Navbar = () => {
           <p className='text-[#2A3645] text-3xl font-bold'>Amazon
             <span className='text-[#FE9C09]'>lytics</span></p>
         </Link>
+        {/* <p>Hi {userDetails.username}</p> */}
         {pathname === '/login' || pathname === '/signup' ? '' : (
           <button onClick={handleLogout}>Logout</button>
         )}

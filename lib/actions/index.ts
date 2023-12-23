@@ -68,7 +68,6 @@ export async function saveToSearchedProducts(productId: string) {
 
     user.searchedProducts.push(product);
     await user.save();
-    
   } catch (error: any) {
     console.log(error);
   }
@@ -118,7 +117,16 @@ export async function getSimilarProducts(productId: string) {
     console.log(error);
   }
 }
-
+export async function getUser() {
+  try {
+    connectToDB();
+    const email = cookies().get("email")?.value;
+    const user = await User.findOne({ email });
+    return JSON.stringify(user);
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function cronJob() {
   try {
     connectToDB();

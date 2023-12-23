@@ -12,11 +12,14 @@ export async function POST(request: NextRequest) {
     const { email, password } = reqBody;
     const user = await User.findOne({ email });
     if (!user)
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Provided email does not match with any user" },
+        { status: 404 }
+      );
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
     if (!isPasswordCorrect) {
       return NextResponse.json(
-        { message: "Invalid Password" },
+        { message: "Incorrect Password" },
         { status: 401 }
       );
     }
@@ -29,7 +32,7 @@ export async function POST(request: NextRequest) {
       expiresIn: "1d",
     });
     const response = NextResponse.json({
-      message: "Login Successfull",
+      message: "Login Successfull !",
       success: true,
     });
 
