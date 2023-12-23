@@ -21,13 +21,13 @@ const Login = () => {
       router.push("/");
       console.log("Login success", response);
       toast(response.data.message, {
-        duration: 100000000, position: 'bottom-center',
+        duration: 5000, position: 'bottom-center',
         style: {
           color: 'green'
         },
         icon: '✅'
       });
-     
+
     } catch (error: any) {
       console.log("Login failed", error);
       toast(error.response.data.message, {
