@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       expiresIn: "1d",
     });
     const response = NextResponse.json({
-      message: "Login Successfull !",
+      message: "Credentials verified ! Logging you in...",
       success: true,
     });
 

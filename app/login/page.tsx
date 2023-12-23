@@ -21,7 +21,7 @@ const Login = () => {
       router.push("/");
       console.log("Login success", response);
       toast(response.data.message, {
-        duration: 6000, position: 'bottom-center',
+        duration: 10000, position: 'bottom-center',
         style: {
           color: 'green'
         },
