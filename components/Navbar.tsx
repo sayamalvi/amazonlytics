@@ -9,7 +9,7 @@ const Navbar = () => {
   const pathname = usePathname()
   const handleLogout = async () => {
     await axios.get('/api/users/logout')
-    router.push('/login')
+    await router.push('/login')
   }
   return (
     <header className='w-full'>

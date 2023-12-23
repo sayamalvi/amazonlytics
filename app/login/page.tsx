@@ -18,7 +18,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      router.push("/");
+      await router.push("/");
       console.log("Login success", response);
       toast(response.data.message, {
         duration: 5000, position: 'bottom-center',
@@ -40,7 +40,6 @@ const Login = () => {
       });
     } finally {
       setLoading(false);
-      setUser({ email: "", password: "" })
     }
   }
 

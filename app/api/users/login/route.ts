@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
       message: "Credentials verified ! Logging you in...",
       success: true,
     });
-
     response.cookies.set("token", token, { httpOnly: true });
     response.cookies.set("email", email, { httpOnly: true });
     return response;
