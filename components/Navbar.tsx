@@ -8,9 +8,13 @@ const Navbar = () => {
   const router = useRouter()
   const pathname = usePathname()
   const handleLogout = async () => {
-    await axios.get('/api/users/logout')
-    router.replace('/login')
-    router.refresh()
+    try {
+      await axios.get('/api/users/logout')
+      router.replace("/login")
+      router.refresh()
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <header className='w-full'>
