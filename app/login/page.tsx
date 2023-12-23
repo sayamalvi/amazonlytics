@@ -18,7 +18,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      await router.push("/");
+      router.replace("/");
       console.log("Login success", response);
       toast(response.data.message, {
         duration: 5000, position: 'bottom-center',
@@ -37,6 +37,7 @@ const Login = () => {
           backgroundColor: 'rgba(255, 0, 0, 0.8)',
           textAlign: 'center'
         }
+
       });
     } finally {
       setLoading(false);
