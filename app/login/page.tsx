@@ -30,7 +30,7 @@ const Login = () => {
       try {
         const fetchUserDetails = await axios.post("/api/users/fetchUser", user);
         setUserDetails({ ...fetchUserDetails.data })
-        
+
       } catch (error) {
         console.log(error)
       }
@@ -63,7 +63,7 @@ const Login = () => {
     <>
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <hr />
-        <label htmlFor="email">email</label>
+        <label htmlFor="email">Email</label>
         <input
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
           id="email"
@@ -72,7 +72,7 @@ const Login = () => {
           onChange={(e) => setUser({ ...user, email: e.target.value })}
           placeholder="email"
         />
-        <label htmlFor="password">password</label>
+        <label htmlFor="password">Password</label>
         <input
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
           id="password"
@@ -84,7 +84,8 @@ const Login = () => {
         <button
           onClick={onLogin}
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">Login</button>
-        <p>Don't have an account?</p><Link href='/signup' className="underline text-blue-500">Signup</Link>
+        <p>Don't have an account?</p>
+        <Link href='/signup' className="underline text-blue-500">Signup</Link>
       </div>
       <Toaster />
     </>
