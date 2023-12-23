@@ -27,18 +27,21 @@ export async function POST(request: NextRequest) {
       );
     //Push the product into user's searchedProducts array and save it
     if (
-      user.searchedProducts.some((product: any) => product._id.toString()) ===
-      productID
+      user.searchedProducts.some(
+        (product: any) => product._id.toString() === productID
+      )
     ) {
       return NextResponse.json(
         { message: "Product already exists" },
-        { status: 200 }
+        { status: 403 }
       );
     } else {
       user.searchedProducts.push(product);
       await user.save();
-
-      return NextResponse.json({ email }, { status: 200 });
+      return NextResponse.json(
+        { message: "Saved to searched products" },
+        { status: 200 }
+      );
     }
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 404 });
