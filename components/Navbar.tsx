@@ -10,6 +10,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await axios.get('/api/users/logout')
     router.replace('/login')
+    router.refresh()
   }
   return (
     <header className='w-full'>

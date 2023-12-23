@@ -19,6 +19,7 @@ const Login = () => {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
       router.replace("/");
+      router.refresh()
       console.log("Login success", response);
       toast(response.data.message, {
         duration: 5000, position: 'bottom-center',
