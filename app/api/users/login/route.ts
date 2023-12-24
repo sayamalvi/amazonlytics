@@ -10,6 +10,18 @@ export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { email, password } = reqBody;
+    if (email === "") {
+      return NextResponse.json(
+        { message: "Email cannot be empty" },
+        { status: 404 }
+      );
+    }
+    if (password === "") {
+      return NextResponse.json(
+        { message: "Password cannot be empty" },
+        { status: 404 }
+      );
+    }
     const user = await User.findOne({ email });
     if (!user)
       return NextResponse.json(

@@ -7,6 +7,7 @@ import { getUser } from '@/lib/actions'
 const Navbar = () => {
   const router = useRouter()
   const pathname = usePathname()
+
   const handleLogout = async () => {
     try {
       await axios.post('/api/users/logout')

@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const savedUser = await newUser.save();
 
     return NextResponse.json(
-      { message: "Successfully signed up !" },
+      { message: "Successfully signed up ! Login to continue." },
       { status: 200 }
     );
   } catch (error: any) {

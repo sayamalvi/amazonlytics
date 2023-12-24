@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
+
 const Login = () => {
   const router = useRouter();
   const [user, setUser] = React.useState({
@@ -56,29 +57,34 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <div className="flex flex-col items-center justify-center">
         <hr />
-        <label htmlFor="email">Email</label>
+        <p className="text-[#2A3645] font-bold text-3xl pb-5">Login</p>
+        {/* <label htmlFor="email">Email</label> */}
         <input
+          required
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
           id="email"
           type="text"
           value={user.email}
           onChange={(e) => setUser({ ...user, email: e.target.value })}
-          placeholder="email"
+          placeholder="Email"
         />
-        <label htmlFor="password">Password</label>
+        {/* <label htmlFor="password">Password</label> */}
         <input
+          required
           className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
           id="password"
           type="password"
           value={user.password}
           onChange={(e) => setUser({ ...user, password: e.target.value })}
-          placeholder="password"
+          placeholder="Password"
         />
         <button
           onClick={onLogin}
-          className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">Login</button>
+          className="px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-[#FE9C09] text-white">
+          {loading ? "Loading..." : "Login"}
+        </button>
         <p>Don't have an account?</p>
         <Link href='/signup' className="underline text-blue-500">Signup</Link>
       </div>

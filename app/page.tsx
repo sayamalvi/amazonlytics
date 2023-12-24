@@ -6,6 +6,7 @@ import { getSearchedProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
 import toast, { Toaster } from 'react-hot-toast'
 import { getUser } from '@/lib/actions'
+
 const Home = async () => {
   const searchedProducts = await getSearchedProducts()
   const userDetails = await getUser()
@@ -31,7 +32,7 @@ const Home = async () => {
         <h2 className='section-text'>Your recent searches</h2>
         <div className='flex flex-wrap gap-x-8 gap-y-16'>
           {searchedProducts?.length === 0 ? <div>
-            <h1 className='text-gray-500 px-2'>You have not searched anything yet</h1>
+            <h1 className='text-gray-500'>You have not searched anything yet</h1>
           </div> : searchedProducts?.map((product: any) => (
             <ProductCard key={product._id} product={product} />
           ))}
