@@ -127,6 +127,9 @@ export async function getUser() {
     console.log(error);
   }
 }
+export async function getPathname(){
+  
+}
 async function cronJob() {
   try {
     connectToDB();

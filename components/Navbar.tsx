@@ -4,10 +4,11 @@ import Image from 'next/image'
 import axios from 'axios'
 import { useRouter, usePathname } from 'next/navigation'
 import { getUser } from '@/lib/actions'
+import { useEffect, useState } from 'react'
 const Navbar = () => {
-  const router = useRouter()
   const pathname = usePathname()
-
+  const [path, setPath] = useState(pathname)
+  const router = useRouter()
   const handleLogout = async () => {
     try {
       await axios.post('/api/users/logout')
@@ -17,6 +18,10 @@ const Navbar = () => {
       console.log(error)
     }
   }
+  useEffect(() => {
+    setPath(pathname)
+  }, [path])
+  console.log(pathname)
   return (
     <header className='w-full'>
       <nav className='nav'>
