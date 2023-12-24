@@ -2,11 +2,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import Navbar from '@/components/Navbar'
-import WelcomeHeading from '@/components/WelcomeHeading'
-import { headers } from 'next/headers'
-
-const headerList = headers()
-const pathname = headerList.get('x-pathname')
 
 const inter = Inter({ subsets: ['latin'] })
 const spaceGrotesk = Space_Grotesk({
@@ -26,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main className='max-w-10xl mx-auto'>
-          {pathname === '/' ? <Navbar /> : <WelcomeHeading />}
+          <Navbar />
           {children}
         </main>
       </body>

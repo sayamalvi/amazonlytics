@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
+import WelcomeHeading from "@/components/WelcomeHeading";
+
 const Signup = () => {
     const router = useRouter();
     const [user, setUser] = React.useState({
@@ -54,6 +56,7 @@ const Signup = () => {
 
     return (
         <>
+            <WelcomeHeading />
             <div className="flex flex-col items-center justify-center">
                 <hr />
                 <p className="text-[#2A3645] font-bold text-3xl pb-5">Signup</p>

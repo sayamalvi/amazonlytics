@@ -1,8 +1,7 @@
 import React from 'react'
-import Image from 'next/image'
 const WelcomeHeading = () => {
     return (
-        <div className='flex items-center gap-6 w-full justify-center text-center flex-col my-20'>
+        <div className='flex items-center gap-6 w-full justify-center text-center flex-col my-10'>
             <p className='text-black text-5xl lg:text-7xl font-bold'>Welcome to
             </p>
             <div className='flex items-center gap-1 w-full justify-center text-center'>
