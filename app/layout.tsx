@@ -6,7 +6,7 @@ import WelcomeHeading from '@/components/WelcomeHeading'
 import { headers } from 'next/headers'
 
 const headerList = headers()
-const pathname = headerList.get('next-url') || ""
+const pathname = headerList.get('x-pathname')
 
 const inter = Inter({ subsets: ['latin'] })
 const spaceGrotesk = Space_Grotesk({
