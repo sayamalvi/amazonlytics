@@ -6,6 +6,7 @@ import Product from "../models/product.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
 import User from "../models/user.model";
 import { cookies } from "next/headers";
+import nodemailer from "nodemailer";
 
 connectToDB();
 
@@ -54,6 +55,7 @@ export async function scrapeAndStore(productURL: string) {
     throw new Error(`Failed to create/update product: :${error.message}`);
   }
 }
+
 export async function saveToSearchedProducts(productId: string) {
   try {
     const email = cookies().get("email")?.value;
@@ -127,8 +129,59 @@ export async function getUser() {
     console.log(error);
   }
 }
-export async function getPathname(){
-  
+async function notifyUser(product: any) {
+  // const email = cookies().get("email")?.value;
+  // return new Promise(() => {
+  //   var transporter = nodemailer.createTransport({
+  //     service: "gmail",
+  //     auth: {
+  //       user: "sayamalvi07@gmail.com",
+  //       pass: process.env.PASSWORD,
+  //     },
+  //   });
+  //   const mailOptions = {
+  //     from: "sayamalvi07@gmail.com",
+  //     to: email,
+  //     subject: "Price dropped !",
+  //     text: `Price dropped for ${product.title} to ${
+  //       product.priceHistory[product.priceHistory.length - 1].price
+  //     }`,
+  //   };
+  // });
+  console.log("Price dropped for ", product.title);
+}
+export async function scrapeAndStoreTrackedProducts(product: any) {
+  if (!product.url) {
+    return;
+  }
+  try {
+    const email = cookies().get("email")?.value;
+    const user = await User.findOne({ email });
+    if (!user) return;
+
+    const scrapedProduct = await scrapeAmazonProduct(product.url);
+    if (!scrapedProduct) return;
+    console.log(scrapedProduct.currentPrice);
+    const updatedPriceHistory = [
+      ...product.priceHistory,
+      { price: scrapedProduct.currentPrice },
+    ];
+    await User.findOneAndUpdate(
+      { email, "trackedProducts._id": product._id },
+      {
+        $set: {
+          "trackedProducts.$.priceHistory": updatedPriceHistory,
+          "trackedProducts.$.lowestPrice": getLowestPrice(updatedPriceHistory),
+          "trackedProducts.$.highestPrice":
+            getHighestPrice(updatedPriceHistory),
+          "trackedProducts.$.averagePrice":
+            getAveragePrice(updatedPriceHistory),
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 async function cronJob() {
   try {
@@ -138,24 +191,25 @@ async function cronJob() {
     if (!user) return null;
     const trackedProducts = user.trackedProducts;
     for (const product of trackedProducts) {
-      await scrapeAndStore(product.url);
-      if (
-        product.priceHistory[product.priceHistory.length - 1].price <
-        product.priceHistory[product.priceHistory.length - 2].price
-      ) {
-        console.log(`Price dropped for ${product.title}`);
-        return;
-      }
-      if (product.priceHistory.length === 20) {
-        product.priceHistory.splice(0, 10);
-        console.log("Deleted first 5 prices");
-        await product.save();
-      }
+      await scrapeAndStoreTrackedProducts(product);
     }
-    console.log("Tracking..");
+    // for (const product of trackedProducts) {
+    //   if (
+    //     product.priceHistory[product.priceHistory.length - 1].price <
+    //     product.priceHistory[product.priceHistory.length - 2].price
+    //   ) {
+    //     notifyUser(product);
+    //     return;
+    //   }
+    //   if (product.priceHistory.length === 20) {
+    //     product.priceHistory.splice(0, 10);
+    //     console.log("Deleted first 5 prices");
+    //     await product.save();
+    //   }
+    // }
   } catch (error) {
     console.log(error);
   }
 }
 
-// setInterval(cronJob, 1000 * 20);
+setInterval(cronJob, 1000 * 20);

@@ -21,7 +21,6 @@ const Navbar = () => {
   useEffect(() => {
     setPath(pathname)
   }, [path])
-  console.log(pathname)
   return (
     <header className='w-full'>
       <nav className='nav'>
