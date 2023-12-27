@@ -23,9 +23,7 @@ const SearchBar = () => {
         if (!isValid) return alert('Please enter a valid Amazon product link')
         try {
             setLoading(true)
-            const productID = await scrapeAndStore(searchPrompt)
-            console.log(productID)
-            const resp = axios.post('/api/users/addToSearchedProducts', { productID }).then((res) => console.log(res)).catch((err) => console.log(err))
+            await scrapeAndStore(searchPrompt)
         } catch (error) {
             console.log(error)
         }

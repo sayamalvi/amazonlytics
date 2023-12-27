@@ -50,27 +50,29 @@ export async function scrapeAndStore(productURL: string) {
       { new: true, upsert: true }
     );
     revalidatePath(`/products/${newProduct._id}`);
-    return newProduct._id.toString();
+    // return newProduct._id.toString();
+    saveToSearchedProducts(newProduct._id.toString());
   } catch (error: any) {
     throw new Error(`Failed to create/update product: :${error.message}`);
   }
 }
 
-export async function saveToSearchedProducts(productId: string) {
+export async function saveToSearchedProducts(productID: string) {
   try {
     const email = cookies().get("email")?.value;
-
     const user = await User.findOne({ email });
     if (!user) return;
-
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productID);
     if (!product) return;
-
-    if (user.searchedProducts.includes(product)) return;
-
-    user.searchedProducts.push(product);
-    await user.save();
-  } catch (error: any) {
+    const productExists = user.searchedProducts.find(
+      (product: any) => product._id.toString() === productID
+    );
+    if (productExists) return;
+    else {
+      user.searchedProducts.push(product);
+      await user.save();
+    }
+  } catch (error) {
     console.log(error);
   }
 }
@@ -215,4 +217,4 @@ async function cronJob() {
   }
 }
 
-setInterval(cronJob, 1000 * 40);
+// setInterval(cronJob, 1000 * 40);
