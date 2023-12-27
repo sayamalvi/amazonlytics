@@ -166,7 +166,7 @@ export async function scrapeAndStoreTrackedProducts(product: any) {
       ...product.priceHistory,
       { price: scrapedProduct.currentPrice },
     ];
-    await User.findOneAndUpdate(
+    await User.updateOne(
       { email, "trackedProducts._id": product._id },
       {
         $set: {
@@ -193,23 +193,26 @@ async function cronJob() {
     for (const product of trackedProducts) {
       await scrapeAndStoreTrackedProducts(product);
     }
-    // for (const product of trackedProducts) {
-    //   if (
-    //     product.priceHistory[product.priceHistory.length - 1].price <
-    //     product.priceHistory[product.priceHistory.length - 2].price
-    //   ) {
-    //     notifyUser(product);
-    //     return;
-    //   }
-    //   if (product.priceHistory.length === 20) {
-    //     product.priceHistory.splice(0, 10);
-    //     console.log("Deleted first 5 prices");
-    //     await product.save();
-    //   }
-    // }
+    for (const product of trackedProducts) {
+      if (
+        product.priceHistory[product.priceHistory.length - 1].price <
+        product.priceHistory[product.priceHistory.length - 2].price
+      ) {
+        notifyUser(product);
+        return;
+      }
+      if (product.priceHistory.length >= 20) {
+        product.priceHistory.splice(0, 10);
+        console.log("Deleted first 5 prices");
+        await User.updateOne(
+          { email, "trackedProducts._id": product._id },
+          { $set: { "trackedProducts.$.priceHistory": product.priceHistory } }
+        );
+      }
+    }
   } catch (error) {
     console.log(error);
   }
 }
 
-setInterval(cronJob, 1000 * 20);
+setInterval(cronJob, 1000 * 40);
