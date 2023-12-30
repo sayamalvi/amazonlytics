@@ -50,7 +50,6 @@ export async function scrapeAndStore(productURL: string) {
       { new: true, upsert: true }
     );
     revalidatePath(`/products/${newProduct._id}`);
-    // return newProduct._id.toString();
     saveToSearchedProducts(newProduct._id.toString());
   } catch (error: any) {
     throw new Error(`Failed to create/update product: :${error.message}`);
@@ -152,69 +151,71 @@ async function notifyUser(product: any) {
   // });
   console.log("Price dropped for ", product.title);
 }
-export async function scrapeAndStoreTrackedProducts(product: any) {
-  if (!product.url) {
-    return;
-  }
-  try {
-    const email = cookies().get("email")?.value;
-    const user = await User.findOne({ email });
-    if (!user) return;
+// export async function scrapeAndStoreTrackedProducts(product: any) {
+//   if (!product.url) {
+//     return;
+//   }
+//   try {
+//     const email = cookies().get("email")?.value;
+//     const user = await User.findOne({ email });
+//     if (!user) return;
 
-    const scrapedProduct = await scrapeAmazonProduct(product.url);
-    if (!scrapedProduct) return;
-    console.log(scrapedProduct.currentPrice);
-    const updatedPriceHistory = [
-      ...product.priceHistory,
-      { price: scrapedProduct.currentPrice },
-    ];
-    await User.updateOne(
-      { email, "trackedProducts._id": product._id },
-      {
-        $set: {
-          "trackedProducts.$.priceHistory": updatedPriceHistory,
-          "trackedProducts.$.lowestPrice": getLowestPrice(updatedPriceHistory),
-          "trackedProducts.$.highestPrice":
-            getHighestPrice(updatedPriceHistory),
-          "trackedProducts.$.averagePrice":
-            getAveragePrice(updatedPriceHistory),
-        },
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
+//     const scrapedProduct = await scrapeAmazonProduct(product.url);
+//     if (!scrapedProduct) return;
+//     console.log(scrapedProduct.currentPrice);
+//     const updatedPriceHistory = [
+//       ...product.priceHistory,
+//       { price: scrapedProduct.currentPrice },
+//     ];
+//     await User.updateOne(
+//       { email, "trackedProducts._id": product._id },
+//       {
+//         $set: {
+//           "trackedProducts.$.priceHistory": updatedPriceHistory,
+//           "trackedProducts.$.lowestPrice": getLowestPrice(updatedPriceHistory),
+//           "trackedProducts.$.highestPrice":
+//             getHighestPrice(updatedPriceHistory),
+//           "trackedProducts.$.averagePrice":
+//             getAveragePrice(updatedPriceHistory),
+//         },
+//       }
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 async function cronJob() {
   try {
-    connectToDB();
-    const email = cookies().get("email")?.value;
-    const user = await User.findOne({ email });
-    if (!user) return null;
-    const trackedProducts = user.trackedProducts;
-    for (const product of trackedProducts) {
-      await scrapeAndStoreTrackedProducts(product);
-    }
-    for (const product of trackedProducts) {
-      if (
-        product.priceHistory[product.priceHistory.length - 1].price <
-        product.priceHistory[product.priceHistory.length - 2].price
-      ) {
-        notifyUser(product);
-        return;
+    const users = await User.find();
+    for (const user of users) {
+      const { trackedProducts } = user;
+      if (trackedProducts.length === 0) continue;
+      for (let i = 0; i < trackedProducts.length; i++) {
+        const product = trackedProducts[i];
+        const productId = product._id.toString();
+        const productURL = product.url;
+        const scrapedProduct = await scrapeAmazonProduct(productURL);
+
+        if (scrapedProduct) {
+          console.log("Scraped product", scrapedProduct.currentPrice);
+          user.trackedProducts[i].priceHistory.push({
+            price: scrapedProduct.currentPrice,
+          });
+        } else {
+          console.log("Failed to scrape product. Retrying..", productId);
+          continue;
+        }
       }
-      if (product.priceHistory.length >= 20) {
-        product.priceHistory.splice(0, 10);
-        console.log("Deleted first 5 prices");
-        await User.updateOne(
-          { email, "trackedProducts._id": product._id },
-          { $set: { "trackedProducts.$.priceHistory": product.priceHistory } }
-        );
-      }
+      await User.findOneAndUpdate(
+        { _id: user._id },
+        { trackedProducts: user.trackedProducts },
+        { new: true }
+      );
+      console.log("Updated products for user", user.username);
     }
   } catch (error) {
     console.log(error);
   }
 }
-
+cronJob();
 // setInterval(cronJob, 1000 * 40);
