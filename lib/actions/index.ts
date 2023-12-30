@@ -203,5 +203,5 @@ async function cronJob() {
     console.log(error.message);
   }
 }
-// cronJob();
-// setInterval(cronJob, 1000 * 40);
+
+setInterval(cronJob, 1000 * 60 * 60 * 24);
