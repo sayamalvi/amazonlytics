@@ -178,7 +178,6 @@ async function cronJob() {
           user.trackedProducts[i].priceHistory.push({
             price: scrapedProduct.currentPrice,
           });
-          notifyUser(user, product);
         }
 
         const latestPrice =
