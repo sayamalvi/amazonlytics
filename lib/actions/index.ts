@@ -130,60 +130,36 @@ export async function getUser() {
     console.log(error);
   }
 }
-async function notifyUser(product: any) {
-  // const email = cookies().get("email")?.value;
-  // return new Promise(() => {
-  //   var transporter = nodemailer.createTransport({
-  //     service: "gmail",
-  //     auth: {
-  //       user: "sayamalvi07@gmail.com",
-  //       pass: process.env.PASSWORD,
-  //     },
-  //   });
-  //   const mailOptions = {
-  //     from: "sayamalvi07@gmail.com",
-  //     to: email,
-  //     subject: "Price dropped !",
-  //     text: `Price dropped for ${product.title} to ${
-  //       product.priceHistory[product.priceHistory.length - 1].price
-  //     }`,
-  //   };
-  // });
-  console.log("Price dropped for ", product.title);
+async function notifyUser(user: any, product: any) {
+  const email = user.email;
+  return new Promise(() => {
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "sayamalvi07@gmail.com",
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+    const mailOptions = {
+      from: "sayamalvi07@gmail.com",
+      to: email,
+      subject: "Price dropped !",
+      text: `Price dropped for ${product.title} to ${
+        product.priceHistory[product.priceHistory.length - 1].price
+      }`,
+    };
+    transporter.sendMail(mailOptions);
+  });
+  
 }
-// export async function scrapeAndStoreTrackedProducts(product: any) {
-//   if (!product.url) {
-//     return;
-//   }
-//   try {
-//     const email = cookies().get("email")?.value;
-//     const user = await User.findOne({ email });
-//     if (!user) return;
-
-//     const scrapedProduct = await scrapeAmazonProduct(product.url);
-//     if (!scrapedProduct) return;
-//     console.log(scrapedProduct.currentPrice);
-//     const updatedPriceHistory = [
-//       ...product.priceHistory,
-//       { price: scrapedProduct.currentPrice },
-//     ];
-//     await User.updateOne(
-//       { email, "trackedProducts._id": product._id },
-//       {
-//         $set: {
-//           "trackedProducts.$.priceHistory": updatedPriceHistory,
-//           "trackedProducts.$.lowestPrice": getLowestPrice(updatedPriceHistory),
-//           "trackedProducts.$.highestPrice":
-//             getHighestPrice(updatedPriceHistory),
-//           "trackedProducts.$.averagePrice":
-//             getAveragePrice(updatedPriceHistory),
-//         },
-//       }
-//     );
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+async function retryScrape(productURL: string) {
+  const scrapedProduct = await scrapeAmazonProduct(productURL);
+  if (scrapedProduct) return scrapedProduct;
+  else {
+    console.log("Retrying scraping..");
+    retryScrape(productURL);
+  }
+}
 async function cronJob() {
   try {
     const users = await User.find();
@@ -194,16 +170,26 @@ async function cronJob() {
         const product = trackedProducts[i];
         const productId = product._id.toString();
         const productURL = product.url;
-        const scrapedProduct = await scrapeAmazonProduct(productURL);
 
-        if (scrapedProduct) {
+        const scrapedProduct = await scrapeAmazonProduct(productURL);
+        if (!scrapedProduct) retryScrape(productURL);
+        else {
           console.log("Scraped product", scrapedProduct.currentPrice);
           user.trackedProducts[i].priceHistory.push({
             price: scrapedProduct.currentPrice,
           });
-        } else {
-          console.log("Failed to scrape product. Retrying..", productId);
-          continue;
+          notifyUser(user, product);
+        }
+
+        const latestPrice =
+          product.priceHistory[product.priceHistory.length - 1];
+        const lastPrice = product.priceHistory[product.priceHistory.length - 2];
+        if (latestPrice < lastPrice) {
+          notifyUser(user, product);
+        }
+        if (product.priceHistory.length >= 20) {
+          product.priceHistory.splice(0, 5);
+          console.log("Deleted first 5 prices");
         }
       }
       await User.findOneAndUpdate(
@@ -213,9 +199,9 @@ async function cronJob() {
       );
       console.log("Updated products for user", user.username);
     }
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.message);
   }
 }
-cronJob();
+// cronJob();
 // setInterval(cronJob, 1000 * 40);
