@@ -33,7 +33,7 @@ const SearchBar = () => {
     }
     return (
         <form className='flex flex-wrap gap-4 mt-12' onSubmit={handleSubmit}>
-            <input className='searchbar-input' type='text' placeholder='Enter product link' value={searchPrompt} onChange={(e) => setSearchPrompt(e.target.value)} />
+            <input className='searchbar-input' type='text' placeholder='Search for a product' value={searchPrompt} onChange={(e) => setSearchPrompt(e.target.value)} />
             <button type='submit' className='searchbar-btn' disabled={searchPrompt === ''}>{loading ? 'Searching...' : "Search"}</button>
         </form>
     )

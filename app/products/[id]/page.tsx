@@ -39,12 +39,6 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                                 <p className='text-base font-semibold text-[#D46F77]'>{product.reviewCount}
                                     {product.reviewCount > 1 ? ' ratings' : ' rating'} </p>
                             </div>
-                            <div className='p-2 bg-white-200 rounded-10'>
-                                <Image src='/assets/icons/bookmark.svg' alt="bookmark" width={20} height={20} />
-                            </div>
-                            <div className='p-2 bg-white-200 rounded-10'>
-                                <Image src='/assets/icons/share.svg' alt="share" width={20} height={20} />
-                            </div>
                         </div>
                     </div>
                     <div className='product-info'>
@@ -91,9 +85,8 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             <div className='flex flex-col gap-10 '>
                 <div className='flex flex-col gap-5 '>
                     <h3 className='text-2xl text-secondary font-semibold'>Product Description</h3>
-
                     <div className='flex flex-col gap-4'>
-                        {product?.description || 'No description found'}
+                        {product?.description.length >= 10 ? product.description : 'No description found'}
                     </div>
                 </div>
                 <button className='btn w-fit mx-auto flex items-center justify-center min-w-[200px]'>

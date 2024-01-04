@@ -20,9 +20,13 @@ const Home = async () => {
               <Image src='/assets/icons/arrow-right.svg' width={16} height={16}
                 alt='arrow-right' />
             </p> */}
-            <h1 className='head-text'>Save your pockets with real time price tracking by <p className='text-[#2A3645] text-6xl font-bold'>Amazon
-              <span className='text-[#FE9C09]'>lytics</span></p></h1>
-            <p className='mt-6'>Powerful, self-serve product and growth to help you convert, engage and retain more.</p>
+            <h1 className='head-text lg:text-8xl'>Save your pockets with real time price tracking by 
+            <p className='text-[#2A3645] text-6xl lg:text-8xl font-bold inline mx-2'>
+              Amazon
+              <span className='text-[#FE9C09]'>lytics</span>
+            </p>
+            </h1>
+            <p className='mt-6 text-2xl lg:text-4xl text-gray-500'>Track, Save, Shop - Never Miss a Price Drop on Amazon!</p>
             <SearchBar />
           </div>
           {/* <HeroCarousel /> */}

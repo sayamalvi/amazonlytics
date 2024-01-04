@@ -1,10 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { scrapeAmazonProduct } from "../scraper";
-import { connectToDB } from "../mongoose";
-import Product from "../models/product.model";
-import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
-import User from "../models/user.model";
+import { scrapeAmazonProduct } from "@/lib/scraper";
+import { connectToDB } from "@/lib/mongoose";
+import Product from "@/lib/models/product.model";
+import { getLowestPrice, getHighestPrice, getAveragePrice } from "@/lib/utils";
+import User from "@/lib/models/user.model";
 import { cookies } from "next/headers";
 import nodemailer from "nodemailer";
 
@@ -150,7 +150,6 @@ async function notifyUser(user: any, product: any) {
     };
     transporter.sendMail(mailOptions);
   });
-  
 }
 async function retryScrape(productURL: string) {
   const scrapedProduct = await scrapeAmazonProduct(productURL);
@@ -203,4 +202,4 @@ async function cronJob() {
   }
 }
 
-// setInterval(cronJob, 1000 * 60 * 2);
+setInterval(cronJob, 1000 * 60 * 2);
