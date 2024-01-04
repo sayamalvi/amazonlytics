@@ -203,4 +203,4 @@ async function cronJob() {
   }
 }
 
-setInterval(cronJob, 1000 * 60 * 60 * 24);
+setInterval(cronJob, 1000 * 60 * 2);
