@@ -32,7 +32,7 @@ const Home = async () => {
           {/* <HeroCarousel /> */}
         </div>
       </section>
-      <section className='trending-section'>
+      <section className='recent-section'>
         <h2 className='section-text'>Your recent searches</h2>
         <div className='flex flex-wrap gap-x-8 gap-y-16'>
           {searchedProducts?.length === 0 ? <div>

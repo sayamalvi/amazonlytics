@@ -17,20 +17,18 @@ const ProductDetails = async ({ params: { id } }: Props) => {
     const product = await getProductById(id)
     if (!product) redirect('/')
     const similarProducts = await getSimilarProducts(id)
-
     return (
         <div className='product-container'>
             <div className='flex gap-28 xl:flex-row flex-col'>
                 <div>
-                    <Image className='mx-auto' src={product.img} alt={product.title} width={580} height={400} />
+                    <Image className='mx-auto' src={product.img} alt={product.title} width={400} height={400} />
                 </div>
-
                 <div className='flex-1 flex flex-col'>
                     <div className='flex justify-between items-start gap-5 flex-wrap pb-6'>
                         <div className='flex flex-col gap-3'>
                             <p className='text-[28px] text-secondary font-semibold'>{product.title}</p>
                             <Link href={product.url} target="_blank" className='text-base text-black opacity-50'>
-                                Visit Product
+                                Check on Amazon
                             </Link>
                         </div>
                         <div className='flex items-center gap-3'>
@@ -53,6 +51,9 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                                     <p className='text-sm text-primary-orange font-semibold'>{product.reviewRating}</p>
                                 </div>
                             </div>
+                        </div>
+                        <div className='w-auto flex flex-row lg:items-start lg:content-start lg:self-start gap-4'>
+                            <TrackButton />
                         </div>
                         <div className='my-7 flex flex-col gap-5'>
                             <div className='flex gap-5 flex-wrap'>
@@ -89,17 +90,9 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                         {product?.description.length >= 10 ? product.description : 'No description found'}
                     </div>
                 </div>
-                <button className='btn w-fit mx-auto flex items-center justify-center min-w-[200px]'>
-                    <Image src='/assets/icons/bag.svg' alt='check' height={22} width={22} />
-                    <Link href={product.url} target='_blank' className='text-base text-white'>Buy Now</Link>
-                </button>
-                <TrackButton />
-            </div>
-            <div>
-
             </div>
             {similarProducts && similarProducts?.length > 0 && (
-                <div className='py-14 flex flex-col gap-2 w-full'>
+                <div className='flex flex-col gap-2 w-full'>
                     <p className='section-text'>Similar Products</p>
                     <div className='flex flex-wrap gap-10 mt-7 w-full'>
                         {similarProducts?.map((pr: Product) => (
