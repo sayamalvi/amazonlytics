@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
 connectToDB();
-export async function GET(response: NextResponse) {
+export async function GET() {
   async function notifyUser(user: any, product: any) {
     const email = user.email;
     return new Promise(() => {
