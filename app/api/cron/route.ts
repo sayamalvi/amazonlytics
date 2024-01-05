@@ -3,9 +3,10 @@ import { scrapeAmazonProduct } from "@/lib/scraper";
 import { connectToDB } from "@/lib/mongoose";
 import User from "@/lib/models/user.model";
 import nodemailer from "nodemailer";
+import { NextResponse } from "next/server";
 
 connectToDB();
-export async function GET() {
+export async function GET(response: NextResponse) {
   async function notifyUser(user: any, product: any) {
     const email = user.email;
     return new Promise(() => {
@@ -74,4 +75,5 @@ export async function GET() {
     }
   }
   cronJob();
+  return NextResponse.json({ message: "Cron job finished" })
 }
