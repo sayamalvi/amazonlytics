@@ -74,7 +74,7 @@
   }
 
   .product-hearts {
-    @apply flex items-center gap-2 px-3 py-2 bg-[#FFF0F0] rounded-10;
+    @apply flex items-center gap-2 px-3 py-2 bg-[#f6e7e7] rounded-10;
   }
 
   .product-stars {
@@ -109,7 +109,7 @@
   }
 
   .product-card_img {
-    @apply max-h-[250px] object-contain w-full h-full bg-transparent;
+    @apply max-h-[250px] object-contain w-full h-full bg-transparent mix-blend-multiply;
   }
 
   .product-title {

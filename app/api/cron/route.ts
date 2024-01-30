@@ -59,7 +59,8 @@ export async function GET() {
             product.priceHistory[product.priceHistory.length - 1];
           const lastPrice =
             product.priceHistory[product.priceHistory.length - 2];
-          if (latestPrice < lastPrice) {
+         
+          if (latestPrice.price < lastPrice.price) {
             notifyUser(user, product);
           }
         }
@@ -75,5 +76,5 @@ export async function GET() {
     }
   }
   cronJob();
-  return NextResponse.json({ message: "Cron job finished" })
+  return NextResponse.json({ message: "Cron job finished" });
 }
