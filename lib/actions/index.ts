@@ -6,7 +6,7 @@ import Product from "../models/product.model";
 import { getLowestPrice, getHighestPrice, getAveragePrice } from "../utils";
 import User from "../models/user.model";
 import { cookies } from "next/headers";
-
+import mongoose from "mongoose";
 connectToDB();
 
 export async function scrapeAndStore(productURL: string) {
@@ -25,9 +25,7 @@ export async function scrapeAndStore(productURL: string) {
         ...existingProduct.priceHistory,
         { price: scrapedProduct.currentPrice, date: Date.now() },
       ];
-      if (
-        !existingProduct.priceHistory.includes(scrapedProduct.currentPrice)
-      ) {
+      if (!existingProduct.priceHistory.includes(scrapedProduct.currentPrice)) {
         updatedPriceHistory = [
           ...existingProduct.priceHistory,
           { price: scrapedProduct.currentPrice, date: Date.now() },
@@ -48,13 +46,12 @@ export async function scrapeAndStore(productURL: string) {
       product,
       { new: true, upsert: true }
     );
-    console.log(getLowestPrice(newProduct.priceHistory));
-    console.log(getHighestPrice(newProduct.priceHistory));
-    console.log(getAveragePrice(newProduct.priceHistory));
     saveToSearchedProducts(newProduct._id.toString());
     revalidatePath(`/products/${newProduct._id}`);
   } catch (error: any) {
-    throw new Error(`Failed to create/update product: :${error.message}`);
+    console.log(error + " Retrying again...");
+    scrapeAndStore(productURL);
+    // throw new Error(`Failed to create/update product: :${error.message}`);
   }
 }
 
@@ -65,13 +62,14 @@ export async function saveToSearchedProducts(productID: string) {
     if (!user) return;
     const product = await Product.findById(productID);
     if (!product) return;
-    const productExists = await User.find({
-      productID: {
-        $in: user.searchedProducts,
+    const productObjectId = new mongoose.Types.ObjectId(productID);
+    const productExists = await User.findOne({
+      email,
+      searchedProducts: {
+        $in: [productObjectId],
       },
     });
-
-    if (Object.keys(productExists).length > 0) return;
+    if (productExists) return;
     else {
       const newUser = await User.updateOne(
         {
