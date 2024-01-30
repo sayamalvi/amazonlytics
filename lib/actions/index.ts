@@ -26,11 +26,11 @@ export async function scrapeAndStore(productURL: string) {
         { price: scrapedProduct.currentPrice, date: Date.now() },
       ];
       if (
-        !existingProduct.priceHistory.includes(scrapedProduct.originalPrice)
+        !existingProduct.priceHistory.includes(scrapedProduct.currentPrice)
       ) {
         updatedPriceHistory = [
           ...existingProduct.priceHistory,
-          { price: scrapedProduct.originalPrice, date: Date.now() },
+          { price: scrapedProduct.currentPrice, date: Date.now() },
         ];
       }
       product = {
@@ -48,6 +48,9 @@ export async function scrapeAndStore(productURL: string) {
       product,
       { new: true, upsert: true }
     );
+    console.log(getLowestPrice(newProduct.priceHistory));
+    console.log(getHighestPrice(newProduct.priceHistory));
+    console.log(getAveragePrice(newProduct.priceHistory));
     saveToSearchedProducts(newProduct._id.toString());
     revalidatePath(`/products/${newProduct._id}`);
   } catch (error: any) {
@@ -64,12 +67,9 @@ export async function saveToSearchedProducts(productID: string) {
     if (!product) return;
     const productExists = await User.find({
       productID: {
-        " $in": user.searchedProducts,
+        $in: user.searchedProducts,
       },
     });
-    // const productExists = user.searchedProducts.find(
-    //   (product: any) => product._id.toString() === productID
-    // );
 
     if (Object.keys(productExists).length > 0) return;
     else {
@@ -120,7 +120,7 @@ export async function getSearchedProducts() {
     const products = await Product.find({
       _id: { $in: searchedProducts },
     });
-    return products
+    return products;
   } catch (error) {
     console.log(error);
   }
