@@ -8,6 +8,7 @@ import Product from "@/lib/models/product.model";
 
 connectToDB();
 export async function GET() {
+  let prevCount = 0;
   async function notifyUser(user: any, product: any) {
     const email = user.email;
     return new Promise(() => {
@@ -70,7 +71,7 @@ export async function GET() {
             product.priceHistory[product.priceHistory.length - 2];
 
           if (latestPrice.price < lastPrice.price) {
-            notifyUser(user, product);
+            await notifyUser(user, product);
           }
         }
         await User.findOneAndUpdate(
@@ -81,7 +82,8 @@ export async function GET() {
         console.log("Updated products for user", user.username);
       }
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error.message, "Retrying...");
+      cronJob();
     }
   }
   cronJob();
