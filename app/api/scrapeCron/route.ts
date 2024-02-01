@@ -3,12 +3,11 @@ import { scrapeAmazonProduct } from "@/lib/scraper";
 import { connectToDB } from "@/lib/mongoose";
 import User from "@/lib/models/user.model";
 import nodemailer from "nodemailer";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import Product from "@/lib/models/product.model";
 
 connectToDB();
 export async function GET() {
-  let prevCount = 0;
   async function notifyUser(user: any, product: any) {
     const email = user.email;
     return new Promise(() => {
@@ -82,8 +81,7 @@ export async function GET() {
         console.log("Updated products for user", user.username);
       }
     } catch (error: any) {
-      console.log(error.message, "Retrying...");
-      cronJob();
+      console.log(error.message);
     }
   }
   cronJob();
