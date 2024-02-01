@@ -1,10 +1,11 @@
-"use server";
 import { scrapeAmazonProduct } from "@/lib/scraper";
 import { connectToDB } from "@/lib/mongoose";
 import User from "@/lib/models/user.model";
 import nodemailer from "nodemailer";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import Product from "@/lib/models/product.model";
+
+export const dynamic = 'force-dynamic'
 
 connectToDB();
 export async function GET() {
