@@ -22,7 +22,7 @@ const Home = async () => {
             </p> */}
             <h1 className='head-text lg:text-8xl'>Save your pockets with real time price tracking by
             </h1>
-            <p className='text-[#2A3645] text-5xl lg:text-8xl font-bold inline'>
+            <p className='text-[#2A3645] text-5xl lg:text-8xl font-bold inline my-3'>
               Amazon
               <span className='text-[#FE9C09]'>lytics</span>
             </p>
