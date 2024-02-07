@@ -28,7 +28,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
         ]
     }
     return (
-        <div className='product-container'>
+        <div className='product-container overflow-x-hidden'>
             <div className='flex gap-28 xl:flex-row flex-col'>
                 <div>
                     <Image className='mx-auto' src={product.img} alt={product.title} width={400} height={400} />
@@ -37,11 +37,11 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                     <div className='flex justify-between items-start gap-5 flex-wrap pb-6'>
                         <div className='flex flex-col gap-3'>
                             <p className='text-[28px] text-secondary font-semibold'>{product.title}</p>
+                        </div>
+                        <div className='flex items-center justify-between gap-3 w-full'>
                             <Link href={product.url} target="_blank" className='text-base text-black opacity-50'>
                                 Check on Amazon
                             </Link>
-                        </div>
-                        <div className='flex items-center gap-3'>
                             <div className='product-hearts'>
                                 <Image src='/assets/icons/red-heart.svg' alt='heart' width={20} height={20} />
                                 <p className='text-base font-semibold text-[#D46F77]'>{product.reviewCount}
@@ -50,44 +50,40 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                         </div>
                     </div>
                     <div className='product-info'>
-                        <div className='flex flex-col gap-2'>
-                            <p className='text-[21px] text-black font-bold'>Rs. {product?.currentPrice}</p>
-                            <p className='text-[21px] text-black opacity-50 line-through'>Rs. {product?.originalPrice}</p>
-                        </div>
-                        <div className='flex flex-col gap-4'>
-                            <div className='flex gap-3'>
-                                <div className='product-stars'>
-                                    <Image src='/assets/icons/star.svg' alt='star' height={16} width={16} />
-                                    <p className='text-sm text-primary-orange font-semibold'>{product.reviewRating}</p>
-                                </div>
+                        <div className='flex gap-2 w-full justify-between items-center'>
+                            <div>
+                                <p className='text-[21px] text-black font-bold'>Rs. {product?.currentPrice}</p>
+                                <p className='text-[21px] text-black opacity-50 line-through'>Rs. {product?.originalPrice}</p>
+                            </div>
+                            <div className='product-stars'>
+                                <Image src='/assets/icons/star.svg' alt='star' height={16} width={16} />
+                                <p className='text-sm text-primary-orange font-semibold'>{product.reviewRating}</p>
                             </div>
                         </div>
-                        <div className='w-auto flex flex-row lg:items-start lg:content-start lg:self-start gap-4'>
+                        <div className='w-full'>
                             <TrackButton />
                         </div>
-                        <div className='my-7 flex flex-col gap-5'>
-                            <div className='flex gap-5 flex-wrap'>
-                                <PriceInfoCard
-                                    title='Current Price'
-                                    iconSrc='/assets/icons/price-tag.svg'
-                                    value={`Rs. ${product.currentPrice}`}
-                                />
-                                <PriceInfoCard
-                                    title='Average Price'
-                                    iconSrc='/assets/icons/chart.svg'
-                                    value={`Rs. ${product.averagePrice}`}
-                                />
-                                <PriceInfoCard
-                                    title='Highest Price'
-                                    iconSrc='/assets/icons/arrow-up.svg'
-                                    value={`Rs. ${product.highestPrice}`}
-                                />
-                                <PriceInfoCard
-                                    title='Lowest Price'
-                                    iconSrc='/assets/icons/arrow-down.svg'
-                                    value={`Rs. ${product.lowestPrice}`}
-                                />
-                            </div>
+                        <div className='w-full my-7 grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3'>
+                            <PriceInfoCard
+                                title='Current Price'
+                                iconSrc='/assets/icons/price-tag.svg'
+                                value={`Rs. ${product.currentPrice}`}
+                            />
+                            <PriceInfoCard
+                                title='Average Price'
+                                iconSrc='/assets/icons/chart.svg'
+                                value={`Rs. ${product.averagePrice}`}
+                            />
+                            <PriceInfoCard
+                                title='Highest Price'
+                                iconSrc='/assets/icons/arrow-up.svg'
+                                value={`Rs. ${product.highestPrice}`}
+                            />
+                            <PriceInfoCard
+                                title='Lowest Price'
+                                iconSrc='/assets/icons/arrow-down.svg'
+                                value={`Rs. ${product.lowestPrice}`}
+                            />
                         </div>
                     </div>
                     {/* <Modal /> */}
@@ -110,7 +106,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             {similarProducts && similarProducts?.length > 0 && (
                 <div className='flex flex-col gap-2 w-full'>
                     <p className='section-text'>Similar Products</p>
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6 justify-self-center self-center md:justify-start md:self-start my-4'>
                         {similarProducts?.map((pr: Product) => (
                             <ProductCard key={pr._id} product={pr} />
                         ))}

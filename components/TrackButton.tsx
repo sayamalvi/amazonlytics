@@ -62,11 +62,11 @@ const TrackButton = () => {
   }, [id])
   return (
     <>
-      <button className='btn bg-secondary w-fit mx-auto flex items-center justify-center min-w-[200px]' onClick={trackProduct}>
+      <button className='btn bg-secondary w-full mx-auto flex items-center justify-center min-w-[200px] my-3' onClick={trackProduct}>
         {buttonText}
       </button>
       {tracking && (
-        <button className='btn bg-red-600 w-fit mx-auto flex items-center justify-center min-w-[200px]' onClick={removeFromTracking}>
+        <button className='btn bg-red-600 w-fit mx-auto flex items-center justify-center min-w-[200px] my-3' onClick={removeFromTracking}>
           Remove
         </button>
       )}
