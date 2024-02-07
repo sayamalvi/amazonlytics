@@ -13,7 +13,6 @@ const Navbar = () => {
     try {
       await axios.post('/api/users/logout')
       router.replace("/login")
-      router.refresh()
     } catch (error) {
       console.log(error)
     }

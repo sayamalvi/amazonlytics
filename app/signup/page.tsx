@@ -89,7 +89,7 @@ const Signup = () => {
                     className="px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-[#FE9C09] text-white">
                     {loading ? "Loading..." : "Signup"}
                 </button>
-                <p>Already have an account?</p><Link href='/login' className="underline text-blue-500">Login</Link>
+                <p>Already have an account?</p><Link href='/login' className="underline text-blue-500" shallow={true} replace={true}>Login</Link>
             </div>
             <Toaster />
         </>

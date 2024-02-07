@@ -87,7 +87,7 @@ const Login = () => {
           {loading ? "Loading..." : "Login"}
         </button>
         <p>Don't have an account?</p>
-        <Link href='/signup' className="underline text-blue-500">Signup</Link>
+        <Link href='/signup' className="underline text-blue-500" shallow={true} replace={true}>Signup</Link>
       </div>
       <Toaster />
     </>

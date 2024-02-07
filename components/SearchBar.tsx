@@ -9,7 +9,7 @@ const SearchBar = () => {
         try {
             const parsedURL = new URL(url)
             const hostname = parsedURL.hostname
-            if (hostname.includes('amazon.in') || hostname.endsWith('amazon')) return true
+            if (hostname.includes('amazon.in') || hostname.includes('amzn.eu') || hostname.endsWith('amazon')) return true
         } catch (error) {
             console.log(error)
             return false
