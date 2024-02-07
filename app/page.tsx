@@ -13,20 +13,20 @@ const Home = async () => {
   // const user = JSON.parse(userDetails!)
   return (
     <>
-      <section className='px-6 mx:px-20 py-4'>
+      <section className='px-6 md:px-20 py-4'>
         <div className='flex max-xl:flex-col gap-16'>
-          <div className='flex flex-col justify-center'>
+          <div className='flex flex-col justify-center overflow-x-hidden'>
             {/* <p className='small-text'>Smart Shopping starts here
               <Image src='/assets/icons/arrow-right.svg' width={16} height={16}
                 alt='arrow-right' />
             </p> */}
-            <h1 className='head-text lg:text-8xl'>Save your pockets with real time price tracking by 
-            <p className='text-[#2A3645] text-6xl lg:text-8xl font-bold inline mx-2'>
+            <h1 className='head-text lg:text-8xl'>Save your pockets with real time price tracking by
+            </h1>
+            <p className='text-[#2A3645] text-5xl lg:text-8xl font-bold inline'>
               Amazon
               <span className='text-[#FE9C09]'>lytics</span>
-            </p> !
-            </h1>
-            <p className='mt-6 text-2xl lg:text-4xl text-gray-500'>Track, Save, Shop - Never Miss a Price Drop on Amazon!</p>
+            </p>
+            <p className='mt-6 text-md lg:text-4xl text-gray-500'>Track, Save, Shop - Never Miss a Price Drop on Amazon!</p>
             <SearchBar />
           </div>
           {/* <HeroCarousel /> */}

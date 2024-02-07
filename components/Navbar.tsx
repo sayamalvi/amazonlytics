@@ -31,7 +31,7 @@ const Navbar = () => {
         </Link>
         {/* <p>Hi {userDetails.username}</p> */}
         {pathname === '/login' || pathname === '/signup' ? '' : (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className='text-sm font-extralight'>Logout</button>
         )}
       </nav>
     </header>

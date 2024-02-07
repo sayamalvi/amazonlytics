@@ -8,7 +8,7 @@ import { getSimilarProducts } from '@/lib/actions'
 import ProductCard from '@/components/ProductCard'
 import { Product } from '@/app/types'
 import TrackButton from '@/components/TrackButton'
-
+import PriceChart from '@/components/PriceChart'
 type Props = {
     params: { id: string }
 }
@@ -17,6 +17,16 @@ const ProductDetails = async ({ params: { id } }: Props) => {
     const product = await getProductById(id)
     if (!product) redirect('/')
     const similarProducts = await getSimilarProducts(id)
+    const chartData = product.priceHistory.map((price: any) => ({ x: price.date.toLocaleString().split(',')[0], y: price.price }))
+    const chart = {
+        labels: chartData.map((data: any) => data.x),
+        datasets: [
+            {
+                label: "Price History",
+                data: chartData.map((data: any) => data.y)
+            }
+        ]
+    }
     return (
         <div className='product-container'>
             <div className='flex gap-28 xl:flex-row flex-col'>
@@ -91,14 +101,19 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                     </div>
                 </div>
             </div>
+            <div className='flex flex-col gap-10'>
+                <h3 className='text-2xl text-secondary font-semibold'>Price History</h3>
+                <div className='self-center'>
+                    <PriceChart priceData={chart} />
+                </div>
+            </div>
             {similarProducts && similarProducts?.length > 0 && (
                 <div className='flex flex-col gap-2 w-full'>
                     <p className='section-text'>Similar Products</p>
-                    <div className='flex flex-wrap gap-10 mt-7 w-full'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                         {similarProducts?.map((pr: Product) => (
                             <ProductCard key={pr._id} product={pr} />
                         ))}
-
                     </div>
                 </div>
             )}
