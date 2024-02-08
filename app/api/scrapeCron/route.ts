@@ -88,10 +88,10 @@ export async function GET() {
   }
   try {
     await cronJob();
-    return NextResponse.json({ message: "Cron job finished" });
+    return NextResponse.json({ message: "Cron job finished." });
   } catch (error) {
     console.log(error);
-    NextResponse.json({ message: "Cron job failed" });
+    NextResponse.json({ message: "Cron job failed !" });
   }
-  NextResponse.json({ message: "Exited" });
+  NextResponse.json({ message: "Exited." });
 }
