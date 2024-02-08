@@ -82,7 +82,7 @@ export async function GET() {
         console.log("Updated products for user", user.username);
       }
     } catch (error: any) {
-      await cronJob();
+      cronJob();
       console.log(error.message);
     }
   }
