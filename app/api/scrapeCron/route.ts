@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 import Product from "@/lib/models/product.model";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 connectToDB();
 export async function GET() {
@@ -35,7 +35,7 @@ export async function GET() {
     if (scrapedProduct) return scrapedProduct;
     else {
       console.log("Retrying scraping..");
-      retryScrape(productURL);
+      await retryScrape(productURL);
     }
   }
   async function cronJob() {
@@ -85,6 +85,12 @@ export async function GET() {
       console.log(error.message);
     }
   }
-  cronJob();
-  return NextResponse.json({ message: "Cron job finished" });
+  try {
+    await cronJob();
+    return NextResponse.json({ message: "Cron job finished" });
+  } catch (error) {
+    console.log(error);
+    NextResponse.json({ message: "Cron job failed" });
+  }
+  NextResponse.json({ message: "Exited" });
 }
