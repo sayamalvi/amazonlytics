@@ -24,6 +24,7 @@ const SearchBar = () => {
         try {
             setLoading(true)
             await scrapeAndStore(searchPrompt)
+            window.location.reload()
         } catch (error) {
             console.log(error)
         }
