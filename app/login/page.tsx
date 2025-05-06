@@ -83,7 +83,7 @@ const Login = () => {
         />
         <button
           onClick={onLogin}
-          className="px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-[#FE9C09] text-white">
+          className="px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-[#4885e0] text-white">
           {loading ? "Loading..." : "Login"}
         </button>
         <p>Don't have an account?</p>

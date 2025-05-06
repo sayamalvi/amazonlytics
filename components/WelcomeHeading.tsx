@@ -7,7 +7,7 @@ const WelcomeHeading = () => {
             <div className='flex items-center gap-1 w-full justify-center text-center'>
                 {/* <Image src='/assets/images/amazon.png' width={40} height={40} alt='logo' className='mx-3 border rounded-full' /> */}
                 <p className='text-[#2A3645] text-3xl font-bold'>Amazon
-                    <span className='text-[#FE9C09]'>lytics</span></p>
+                    <span className='text-[#4885e0]'>lytics</span></p>
             </div>
 
         </div>
